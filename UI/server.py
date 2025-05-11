@@ -127,4 +127,4 @@ def run_flask(shared_data,calibration,controller,config):
     """Run Flask server"""
     print("Starting Flask server...")
     app = create_flask_app(shared_data,calibration,controller)
-    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
+    app.run(host=config['host'], port=config["web_port"], debug=False, threaded=True)
