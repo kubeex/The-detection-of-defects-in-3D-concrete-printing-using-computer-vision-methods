@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}DigiBeton - Scanner Calibration{% endblock %}
+
+{% block content %}
+    <div class="dashboard-header">
+        <h1>Scanner Calibration</h1>
+        <p>Follow the steps below to calibrate your scanner</p>
+    </div>
+    
+    <!-- Calibration Controls -->
+    <div class="calibration-controls">
+        <div class="control-group">
+            <button id="start-calibration" class="btn btn-primary">
+                <i class="fas fa-play"></i>
+                Start Calibration
+            </button>
+            
+            <button id="capture-frame" class="btn btn-success" style="display: none;">
+                <i class="fas fa-camera"></i>
+                Capture Frame
+            </button>
+            
+            <button id="stop-calibration" class="btn btn-danger" style="display: none;">
+                <i class="fas fa-stop"></i>
+                Stop Calibration
+            </button>
+        </div>
+        
+        <div class="control-group">
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+    
+    <!-- Video Feed -->
+    <div class="stream-box">
+        <div class="stream-header">
+            <div class="stream-title">
+                <i class="fas fa-video"></i>
+                <span>Calibration Feed</span>
+            </div>
+        </div>
+        <div class="stream-content">
+            <img class="stream-img" src="{{ url_for('video_feed_dynamic', frame_type='processed0') }}" alt="Calibration Feed">
+            <div class="data-overlay">Position the scanner as indicated</div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block additional_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const startButton = document.getElementById('start-calibration');
+        const captureButton = document.getElementById('capture-frame');
+        const stopButton = document.getElementById('stop-calibration');
+        
+        startButton.addEventListener('click', function() {
+            // Show the capture and stop buttons
+            startButton.style.display = 'none';
+            captureButton.style.display = 'inline-flex';
+            stopButton.style.display = 'inline-flex';
+            
+            alert('Calibration started. Position the scanner and capture frames.');
+        });
+        
+        captureButton.addEventListener('click', function() {
+            alert('Frame captured successfully.');
+        });
+        
+        stopButton.addEventListener('click', function() {
+            // Show the start button again
+            startButton.style.display = 'inline-flex';
+            captureButton.style.display = 'none';
+            stopButton.style.display = 'none';
+            
+            alert('Calibration completed.');
+        });
+    });
+</script>
+{% endblock %}

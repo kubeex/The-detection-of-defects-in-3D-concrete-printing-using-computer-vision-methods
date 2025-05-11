@@ -1,0 +1,6 @@
+numpy
+opencv-contrib-python
+flask
+picamera2
+opcua
+PyYAML

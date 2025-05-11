@@ -1,0 +1,109 @@
+<div class="dashboard-header">
+    <h1>Scanner Dashboard</h1>
+    <p>Real-time concrete scanning visualization and analysis</p>
+</div>
+
+<div class="controls">
+    <button class="control-btn active">
+        <i class="fas fa-play"></i>
+        <span>Live View</span>
+    </button>
+    <button class="control-btn">
+        <i class="fas fa-pause"></i>
+        <span>Pause</span>
+    </button>
+    <button class="control-btn">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+    </button>
+    <button class="control-btn">
+        <i class="fas fa-save"></i>
+        <span>Save Capture</span>
+    </button>
+</div>
+
+<div class="grid-container">
+    <div class="stream-box">
+        <div class="stream-header">
+            <div class="stream-title">
+                <i class="fas fa-video"></i>
+                <span>Raw Feed</span>
+            </div>
+            <div class="stream-actions">
+                <button class="stream-btn" title="Maximize">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="stream-btn" title="Download">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="stream-btn" title="Settings">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </div>
+        <div class="stream-content">
+            <img class="stream-img" src="{{ url_for('video_feed_dynamic', frame_type='processed0') }}" alt="Raw Feed">
+            <div class="data-overlay">FPS: 30 | Resolution: 1280x720</div>
+        </div>
+    </div>
+    
+    <div class="stream-box">
+        <div class="stream-header">
+            <div class="stream-title">
+                <i class="fas fa-filter"></i>
+                <span>Processed Feed 1</span>
+            </div>
+            <div class="stream-actions">
+                <button class="stream-btn" title="Maximize">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="stream-btn" title="Download">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="stream-btn" title="Settings">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </div>
+        <div class="stream-content">
+            <img class="stream-img" src="{{ url_for('video_feed_dynamic', frame_type='processed2') }}" alt="Processed Feed 1">
+            <div class="data-overlay">Detection Active | Objects: 3</div>
+        </div>
+    </div>
+</div>
+
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-title">SURFACE AREA SCANNED</div>
+        <div class="stat-value">128.5 m²</div>
+        <div class="stat-trend trend-up">
+            <i class="fas fa-arrow-up"></i>
+            <span>12% from last scan</span>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-title">ANOMALIES DETECTED</div>
+        <div class="stat-value">14</div>
+        <div class="stat-trend trend-down">
+            <i class="fas fa-arrow-down"></i>
+            <span>3 fewer than average</span>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-title">SCAN DEPTH</div>
+        <div class="stat-value">15.2 cm</div>
+        <div class="stat-trend">
+            <span>Optimal range achieved</span>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-title">SCAN DURATION</div>
+        <div class="stat-value">01:28:45</div>
+        <div class="stat-trend">
+            <span>Scanning in progress</span>
+        </div>
+    </div>
+</div>
