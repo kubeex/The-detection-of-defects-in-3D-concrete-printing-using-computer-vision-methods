@@ -1,0 +1,10 @@
+mode: ll
+target_width: 45
+target_height: 250
+tolerance_width: 5
+tolerance_height: 5
+calibration:
+  pattern_size: [9, 6]
+output_path: data
+host: 192.168.50.5
+web_port: 5000

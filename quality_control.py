@@ -6,7 +6,7 @@ import threading
 from printer_communication import PrinterCommunication
 
 class QualityControl:
-    def __init__(self,camera,shared_data):
+    def __init__(self,camera,shared_data,config=None):
         self.camera = camera
         self.scanner =  Scanner(camera)
         self.shared_data = shared_data
@@ -17,7 +17,12 @@ class QualityControl:
         self.height_target = 200
         self.max_width_error = 5
         self.max_height_error = 10
-        
+        if config is not None:
+            self.width_target = config['target_width']
+            self.height_target = config['target_height']
+            self.max_width_error = config['tolerance_width']
+            self.max_height_error = config['tolerance_height']
+            
 
     def control_loop(self):
         """

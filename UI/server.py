@@ -123,7 +123,7 @@ def create_flask_app(shared_data,calibration, controller):
 
     return app
 
-def run_flask(shared_data,calibration,controller):
+def run_flask(shared_data,calibration,controller,config):
     """Run Flask server"""
     print("Starting Flask server...")
     app = create_flask_app(shared_data,calibration,controller)

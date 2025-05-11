@@ -8,7 +8,7 @@ from time import sleep, time
 
 data_path = os.path.dirname(os.path.abspath(__file__)) + "/calib/"
 class Camera:
-    def __init__(self):
+    def __init__(self,config=None):
         self.camera = Picamera2()
         print(self.camera.sensor_resolution)
         self.width = 1014
@@ -104,7 +104,7 @@ class Camera:
                 return bgr_frame
 
 class Calibration:
-    def __init__(self,camera,shared_data):
+    def __init__(self,camera,shared_data,config):
         self.data_path = os.path.dirname(os.path.abspath(__file__)) + "/calib/"
         self.color = (255,255,255)
         self.font = cv2.FONT_HERSHEY_SIMPLEX
