@@ -12,11 +12,12 @@ class QualityControl:
         self.shared_data = shared_data
         self.control_thread = None
         self.running = threading.Event()  # Thread control flag
-        self.printer = PrinterCommunication(None)  # Placeholder for printer communication
+        self.printer = PrinterCommunication(config) 
         self.width_target = 100
         self.height_target = 200
         self.max_width_error = 5
         self.max_height_error = 10
+        self.config = config
         if config is not None:
             self.width_target = config['target_width']
             self.height_target = config['target_height']
@@ -30,7 +31,7 @@ class QualityControl:
         This method should be called in a separate thread.
         """
         previous_time = time()
-        data_logger = DataLogger()
+        data_logger = DataLogger(self.config)
         print("starting control loop thread")
         while self.running.is_set():
             # Capture and process frames
@@ -40,7 +41,6 @@ class QualityControl:
             fps = 1/dt
             t  = time()
             frame = self.camera.get__undisorted_frame()
-            # print("time it takes to get frame",time()-t)
             width, height, frame, laser_lines_mask = self.scanner.measure_width_height(frame)
             cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
             # if width is not None and height is not None:
@@ -51,8 +51,6 @@ class QualityControl:
             quality_bool, status_message = self.evaluate_print_quality(width,height)
             self.shared_data.update_frames(frame, laser_lines_mask)
             self.shared_data.update_measurements(width,height,quality_bool,status_message)
-            #Log messured data
-            # print(self.get_hsv_values())
             coords = self.printer.get_current_coords()
             data_logger.log(coords, width, height, quality_bool)
             sleep(0.01)

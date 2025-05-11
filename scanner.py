@@ -52,11 +52,9 @@ class Scanner:
         Returns:
         - (x, y, z): 3D coordinates
         """
-        # print(self.camera.focal_lengths_mm)
-        # print(self.camera.principal_point_mm)
 
-        self.f_x =  self.camera.focal_lengths_new_mm[0]
-        self.f_y = self.camera.focal_lengths_new_mm[1]
+        self.f_x =  self.camera.focal_lengths_mm[0]
+        self.f_y = self.camera.focal_lengths_mm[1]
         # self.f_y = self.camera.focal_lengths_mm[1]
         # self.f_x =  self.camera.focal_lengths_mm[0]
         # self.f = (self.f_x + self.f_y)/2
@@ -94,7 +92,6 @@ class Scanner:
         if frame is not None:
             laser_lines_mask = self.laser.extract_mask(frame)
             contours, _ = cv2.findContours(laser_lines_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-            # print(self.laser.get_hsv_values())
             if len(contours) > 0:
                 curve_points = self.laser.get_curve_points(contours)
                 cv2.polylines(frame, [curve_points], isClosed=False, color=(0, 255, 0), thickness=2) #draw detected profile of the laser line
@@ -115,9 +112,6 @@ class Scanner:
                 else:
                     width = None
                     height = None
-                # rgb_msk = cv2.cvtColor(laser_lines_mask, cv2.COLOR_GRAY2BGR)
-                # laser_lines_mask = cv2.drawContours(rgb_msk, contours, -1, (0, 255, 0),2)
-                # laser_lines_mask =  cv2.polylines(rgb_msk, [curve_points], isClosed=False, color=(0, 255, 0), thickness=2)
 
                 return width, height, frame, laser_lines_mask
 
@@ -182,32 +176,17 @@ class LaserLine:
         mask = cv2.bitwise_or(mask1, mask2)
         return mask 
     
-    # def get_curve_points(self,line_mask,polynom=2):
-    #     contours, _ = cv2.findContours(line_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    #     # Set minimum length threshold
-    #     min_length = 100
-
-    #     # Calculate perimeters for all contours at once
-    #     perimeters = np.array([cv2.arcLength(cnt, closed=False) for cnt in contours])
-
-    #     # Create a boolean mask of contours that meet the length requirement
-    #     mask = perimeters >= min_length
-
-    #     # Filter the contours using the mask
-    #     filtered_contours = [contours[i] for i in np.where(mask)[0]]
-    #     contours = sorted(filtered_contours, key=lambda c: cv2.boundingRect(c)[1]) #Sorting the contours by y position in the frame
-    #     if len(contours) >0:
-    #         highest_contour = contours[0]   #Getting only the highest positioned contour - profile should be the highest point laser touches
-    #         x = highest_contour[:, :, 0].flatten()
-    #         y = highest_contour[:, :, 1].flatten()
-    #         poly = np.poly1d(np.polyfit(x, y, polynom))
-    #         self.curve_points = np.array([[_x, int(poly(_x))] for _x in range(min(x), max(x), 5)], dtype=np.int32)
-    #         return self.curve_points
-    #     else:
-    #         return None
 
     def get_curve_points(self,contours):
-        # contours, _ = cv2.findContours(line_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        """
+        Main function for extracting the profile curve of the scanned profile
+        
+        Args:
+            contours:detected contours to get the profile from 
+        Returns:
+            curve points
+        """
+
         min_length = 100
 
         perimeters = np.array([cv2.arcLength(cnt, closed=False) for cnt in contours])
@@ -302,7 +281,7 @@ def draw_point_with_2d_3d_coords(frame, point_2d, point_3d, point_color=(0, 0, 2
     
     # Calculate text positions - place text to the left of the point
     # Ensure text doesn't go off the left edge of the frame
-    text_x = max(x - text_3d_width - 10, 5)  # 10px left of point, minimum 5px from left edge
+    text_x = max(x - text_3d_width - 10, 5) 
     
     # Position 3D text slightly above the point's y-coordinate
     text_3d_y = y - 5

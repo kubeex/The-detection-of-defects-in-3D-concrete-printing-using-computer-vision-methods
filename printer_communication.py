@@ -2,8 +2,8 @@ from opcua import Client
 from datetime import datetime
 
 class PrinterCommunication:
-    def __init__(self, server_url="opc.tcp://192.168.1.100:4840"):
-        self.server_url = server_url
+    def __init__(self,config):
+        self.server_url = config["opcua_server_url"]
         self.client = Client(self.server_url)
 
         # Tady budou NodeId pro pozici a rychlost (doplň po zjištění)

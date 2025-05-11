@@ -6,16 +6,16 @@ import cv2
 import time
 
 class DataLogger:
-    def __init__(self, base_folder='data', filename='measurements.csv', save_interval_time=10):
+    def __init__(self, config):
         """
         :param base_folder: Hlavní složka pro uložení všech měření.
         :param filename: Název CSV souboru.
         :param save_interval_frames: Po kolika snímcích ukládat (volitelné).
         :param save_interval_time: Minimální čas mezi ukládáním v sekundách (volitelné).
         """
-        self.base_folder = base_folder
-        self.filename = filename
-        self.save_interval_time = save_interval_time
+        self.base_folder = config['output_path']
+        self.filename = 'measurements.csv'
+        self.save_interval_time = config['save_interval_time']
         self.buffer = []
         self.counter = 0
         self.last_save_time = datetime.now()
@@ -107,7 +107,6 @@ class SharedData:
 
     def update_measurements(self, width, height, quality_bool,status):
         with self.lock:
-            # print(f"📡 Updating measurement at {time.time()} w={width:.2f}, h={height:.2f}")
             self.measurements = {
                 'width': width,
                 'height': height,

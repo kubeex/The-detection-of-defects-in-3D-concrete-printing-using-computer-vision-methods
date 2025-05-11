@@ -10,30 +10,13 @@ def create_flask_app(shared_data,calibration, controller):
     def get_hsv_defaults():
         return controller.get_hsv_values()
 
-    # @app.route('/live_measurements')
-    # def live_measurements():
-    #     start = time.time()
-    #     data = shared_data.get_measurements()
-
-    #     print("📡 Getting measurement at", time.time(), data)
-
-    #     # Add this:
-    #     import datetime
-    #     if data['width'] == -1000:
-    #         print("🕗 Measurement data not yet initialized!")
-    #     else:
-    #         print("✅ Valid measurement received!")
-
-    #     print(f"📡 Responding after {time.time() - start:.3f}s")
-    #     return jsonify(data)
-
     @app.route('/live_measurements_stream')
     def live_measurements_stream():
         def event_stream():
             while True:
                 data = shared_data.get_measurements()
                 yield f"data: {json.dumps(data)}\n\n"
-                time.sleep(0.1)  # adjust as needed (e.g., 0.2s for 5 Hz)
+                time.sleep(0.1) 
 
         return Response(event_stream(), mimetype='text/event-stream')
 
@@ -68,8 +51,6 @@ def create_flask_app(shared_data,calibration, controller):
     @app.route('/capture', methods=['POST'])
     def capture():
         """Handle capture button press."""
-        # You can implement your capture logic here
-        print("Capture button pressed!")  # Debugging output
         calibration.caputre_state = True
 
         return "Image captured"
@@ -77,8 +58,6 @@ def create_flask_app(shared_data,calibration, controller):
     @app.route('/calibrate', methods=['POST'])
     def calibrate():
         """Handle capture button press."""
-        # You can implement your capture logic here
-        print("Calibrate button pressed!")  # Debugging output
         calibration.quit_state = True
         
         return "Image captured"
@@ -92,7 +71,6 @@ def create_flask_app(shared_data,calibration, controller):
         # Wait briefly and check the shared data
         time.sleep(1)
         m = shared_data.get_measurements()
-        # print("🔍 Measurement after 1s:", m)
 
         return "Measurement started"
 
