@@ -18,4 +18,3 @@ as a fundamental building block for further automation of the 3D
 concrete printing processes.
 ---
 
-*More content such as methodology, dataset description, and results will be added here as the project progresses.*
