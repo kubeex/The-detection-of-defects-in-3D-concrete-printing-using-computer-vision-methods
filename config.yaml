@@ -1,4 +1,4 @@
-mode: ll
+mode: ui 
 target_width: 45
 target_height: 250
 tolerance_width: 5
@@ -9,4 +9,4 @@ output_path: data
 save_interval_time: 10
 host: 0.0.0.0
 web_port: 5005
-opcua_server_url: "random.omg"
+opcua_server_url: "opc.tcp://server:port"
