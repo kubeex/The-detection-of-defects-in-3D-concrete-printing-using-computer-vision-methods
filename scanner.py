@@ -23,11 +23,6 @@ class Scanner:
         cy_px = self.camera.principal_point_new[1]
         centered_x = -pixel_coords[0] + cx_px
         centered_y = -pixel_coords[1] + cy_px
-
-        # centered_x = -pixel_coords[0]+self.frame_center[0]
-        # centered_y = -pixel_coords[1]+self.frame_center[1]
-
-        # print(centered_x,centered_y)
         real_x = centered_x * self.K[0]
         real_y = centered_y * self.K[1]
         return real_x, real_y
@@ -55,15 +50,8 @@ class Scanner:
 
         self.f_x =  self.camera.focal_lengths_mm[0]
         self.f_y = self.camera.focal_lengths_mm[1]
-        # self.f_y = self.camera.focal_lengths_mm[1]
-        # self.f_x =  self.camera.focal_lengths_mm[0]
-        # self.f = (self.f_x + self.f_y)/2
-
-        # self.f_x =  8.8
-        # self.f_y = 8.8
-
-
-        self.f_y = 9.08
+        # self.f_y = 9.08
+        
         cx_mm = self.camera.principal_point_new_mm[0]
         cy_mm = self.camera.principal_point_new_mm[1]
 
@@ -74,11 +62,12 @@ class Scanner:
         angle_diff = self.alpha - np.arctan2(y_k, self.f_y)
 
         # # Compute x        
-        # x_zlomek = x_k/(self.f_y*np.sin(self.alpha)-y_k*np.cos(self.alpha))
-        # x = z*x_zlomek
+        x_zlomek = x_k/(self.f_y*np.sin(self.alpha)-y_k*np.cos(self.alpha))
+        x = z*x_zlomek
 
-        x_zlomek = x_k/(self.f_y*np.cos(self.alpha)+y_k*np.sin(self.alpha))
-        x = self.D*x_zlomek
+        # Alternative x compute - when looked from top trough z axis - should return same value as above equation    
+        # x_zlomek = x_k/(self.f_y*np.cos(self.alpha)+y_k*np.sin(self.alpha))
+        # x = self.D*x_zlomek
 
         y =  0
 
@@ -289,7 +278,7 @@ def draw_point_with_2d_3d_coords(frame, point_2d, point_3d, point_color=(0, 0, 2
     # Position 2D text below the 3D text
     text_2d_y = text_3d_y + text_3d_height + 5
     
-    # Draw the texts
+    # Draw the texts - turned off 
     # cv2.putText(frame, text_3d, (text_x, text_3d_y), cv2.FONT_HERSHEY_SIMPLEX,
     #             font_scale, text_color, thickness)
     
@@ -304,5 +293,4 @@ def draw_point_with_2d_3d_coords(frame, point_2d, point_3d, point_color=(0, 0, 2
     
 
 if __name__ == "__main__":
-    # Create a single shared Frames instance
     capture_and_process(SharedData())
