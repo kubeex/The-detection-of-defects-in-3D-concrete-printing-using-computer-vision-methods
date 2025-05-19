@@ -149,10 +149,6 @@ class Calibration:
         #velikost ctvercu a markeru
         squareLength = int((self.paperWidth-100) / squaresX)
         markerLength = int(squareLength * 0.7)
-        # print(f"Square length: {squareLength}")
-        # print(f"Marker length: {markerLength}")
-
-
         self.board =cv2.aruco.CharucoBoard((squaresX, squaresY), 26, 18, self.dictionary)
         if filename is not None:
             img = self.board.generateImage((self.paperWidth, self.paperHeight))
@@ -167,17 +163,15 @@ class Calibration:
         self.quit_state = False
 
         while self.running.is_set():
-            # print("Charlibration!")
             frame = self.camera.get_frame()
             corners, ids, _ = cv2.aruco.detectMarkers(frame, self.dictionary)
             if len(corners) > 0:
                 ret, charuco_corners, charuco_ids = cv2.aruco.interpolateCornersCharuco(corners, ids, frame, self.board)
-                # Pokud je deska nalezena(vic jak 15 rohů)
+                # If there is more than 15 corners found
                 if ret > 15:
                     cv2.aruco.drawDetectedCornersCharuco(frame, charuco_corners,charuco_ids)
-                    #Vypise text ze deska byla nalezena
                     cv2.putText(frame, 'Board detected', (10, 50),self.font, 1, self.color, 2)
-                    #Pokud je stisknuta klavesa 0
+                    #If state is true 
                     if self.caputre_state:
 
                         self.charucoCorners.append(charuco_corners)
@@ -186,14 +180,13 @@ class Calibration:
                 else:
                     cv2.putText(frame, 'No board detected', (10, 50),self.font, 1, self.color, 2)
 
-            # Pokud neni nalezen zadny marker vypise text
+            # If no marker is found, there is error text in the image
             else:
                 cv2.putText(frame, 'ArUco nedetekovano', (10, 50),self.font, 1, self.color, 2)
 
             cv2.putText(frame, f'Vzorky: {len(self.charucoCorners)}', (10, 100), self.font, 1, self.color, 2)
             self.shared_data.update_frames(frame)
-            #Zobrazeni vysledneho obrazku
-            #Pokud je stisknuta klavesa + ukonci se program
+            #If quit state becomes true...
             if self.quit_state:
                 print('Quitting...')
                 break
