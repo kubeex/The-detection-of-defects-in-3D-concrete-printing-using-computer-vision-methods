@@ -1,12 +1,13 @@
 from opcua import Client
 from datetime import datetime
 
-class PrinterCommunication:
+# This entire class serves as a mockup — it’s tailored for an OPC UA server, 
+# but the same structure can be adapted for other communication protocols 
+# depending on your specific machine or system setup.class PrinterCommunication:
     def __init__(self,config):
         self.server_url = config["opcua_server_url"]
         self.client = Client(self.server_url)
-
-        # Tady budou NodeId pro pozici a rychlost (doplň po zjištění)
+        # Here should be the node pointers to those values within the opc ua strucre , depends on specific printer.
         self.node_position_x = None
         self.node_position_y = None
         self.node_position_z = None
@@ -19,8 +20,6 @@ class PrinterCommunication:
             self.client.connect()
             self.connected = True
             print("[PrinterComm] Connected to OPC UA server.")
-
-            # TODO: Změnit NodeId podle reálné struktury serveru
             self.node_position_x = self.client.get_node("ns=2;s=Machine.Position.X")
             self.node_position_y = self.client.get_node("ns=2;s=Machine.Position.Y")
             self.node_position_z = self.client.get_node("ns=2;s=Machine.Position.Z")
