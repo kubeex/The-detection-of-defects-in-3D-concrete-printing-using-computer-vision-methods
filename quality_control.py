@@ -41,14 +41,12 @@ class QualityControl:
             fps = 1/dt
             t  = time()
             frame = self.camera.get__undisorted_frame()
+            # Measure - Let scanner object do all the tricks 
             width, height, frame, laser_lines_mask = self.scanner.measure_width_height(frame)
             cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-            # if width is not None and height is not None:
-            #     cv2.putText(frame,f"width:{int(width)}",(self.camera.width//2,100),1, 1, (255,255,255),thickness=2)
-            #     cv2.putText(frame,f"height:{int(height)}",(self.camera.width//2,130),1, 1, (255,255,255),thickness=2)
-    
-            # Update shared frames
+            # Evaluate quality
             quality_bool, status_message = self.evaluate_print_quality(width,height)
+            # Update shared frames object
             self.shared_data.update_frames(frame, laser_lines_mask)
             self.shared_data.update_measurements(width,height,quality_bool,status_message)
             coords = self.printer.get_current_coords()
@@ -79,7 +77,7 @@ class QualityControl:
         height_error = False
         status_messages = []
 
-        # Width evaluation
+        # Width evaluation - both in Czech for the purposes of the thesis 
         if width is not None:
             if width > self.width_target + self.max_width_error:
                 width_error = True
@@ -98,7 +96,7 @@ class QualityControl:
                     "- Nesprávná rychlost podávání"
                 )
 
-        # Vyhodnocení výšky
+        # Height evaluation
         if height is not None:
             if height > self.height_target + self.max_height_error:
                 height_error = True
